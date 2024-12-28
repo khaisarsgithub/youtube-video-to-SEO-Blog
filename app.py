@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 gemini = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-1.5-pro",
     generation_config={
         "temperature": 0.5,
         "top_p": 0.95,
@@ -411,6 +411,38 @@ def summarize_text(text):
             Include a list of keywords for SEO and suggest a title that grabs attention.
             Identify the speaker and display the speaker name in the blog header.
             Transcript:"""
+        # system_instructions = f"""
+        #     Transform the following YouTube transcript into a condensed, high-impact script:
+            
+        #     --------------------------------------------------------------------------------
+        #     {text}
+        #     --------------------------------------------------------------------------------
+
+        #     Requirements:
+
+        #     Distill the core message into 150-200 words maximum (ideal for 60-90 second videos)
+        #     Extract only the most valuable insights and actionable takeaways
+        #     Use conversational tone while maintaining expertise
+        #     Structure in clear segments: hook (10 seconds), main points (40-60 seconds), call-to-action (10 seconds)
+        #     Include timestamps for each segment
+        #     Highlight key statistics, surprising facts, or counterintuitive findings
+        #     Remove filler words, repetitive content, and tangential examples
+        #     Maintain narrative flow using smooth transitions
+        #     End with a memorable insight or actionable step
+
+        #     Format the script as:
+        #     [00:00] Hook: [Attention-grabbing opening]
+        #     [00:10] Main Point 1: [Key insight]
+        #     [00:25] Main Point 2: [Key insight]
+        #     [00:40] Main Point 3: [Key insight]
+        #     [00:55] Conclusion: [Memorable takeaway + Call-to-action]
+        #     Additional notes:
+
+        #     Bold the most impactful statements
+        #     Add [Pause] for dramatic effect where needed
+        #     Include Visual cue suggestions in brackets
+        #     Mark emphasis words in asterisks
+        # """
         text = system_instructions + "\n" + text
         total_tokens = gemini.count_tokens(text).total_tokens
         logger.info(f"Gemini Token count: {total_tokens}")
